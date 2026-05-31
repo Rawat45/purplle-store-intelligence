@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: purplle-redis
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:alpine
+    container_name: purplle-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: purplle_intelligence
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    container_name: purplle-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://admin:password123@postgres:5432/purplle_intelligence
+    depends_on:
+      - redis
+      - postgres
+
+  ml-pipeline:
+    build: ./ml-pipeline
+    container_name: purplle-ml-pipeline
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+
+  frontend:
+    build: ./frontend
+    container_name: purplle-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend

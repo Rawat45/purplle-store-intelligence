@@ -1,0 +1,42 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Docker installers & temporary files
+Docker.dmg
+*.log
+*.csv
+*.zip
+
+# Dependencies (will be built inside docker containers)
+node_modules/
+dist/
+build/
+.svelte-kit/
+
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+
+# IDE config
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Media/Video files (large assets)
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
